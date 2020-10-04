@@ -8,7 +8,7 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity(name = "users")
-public class User implements Serializable {
+public class User implements ObservableEntity, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
@@ -52,6 +52,16 @@ public class User implements Serializable {
     }
 
     public User() {
+    }
+
+    @Override
+    public int getId() {
+        return userId;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return userId + " (" + email + ")";
     }
 
     public Integer getUserId() {

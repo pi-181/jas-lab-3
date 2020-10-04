@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity(name = "messages")
-public class Message implements Serializable {
+public class Message implements ObservableEntity, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id", nullable = false)
@@ -36,6 +36,16 @@ public class Message implements Serializable {
     }
 
     public Message() {
+    }
+
+    @Override
+    public int getId() {
+        return messageId;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return messageId + " (" + textMessage + ")";
     }
 
     public Integer getMessageId() {
@@ -84,7 +94,7 @@ public class Message implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Message message = (Message) o;
         return Objects.equals(messageId, message.messageId) &&
-                Objects.equals(sender, message.sender) &&
+                Objects.equals(sender.getUserId(), message.sender.getUserId()) &&
                 Objects.equals(textMessage, message.textMessage) &&
                 Objects.equals(removed, message.removed) &&
                 Objects.equals(conversation, message.conversation);
@@ -99,7 +109,7 @@ public class Message implements Serializable {
     public String toString() {
         return "Message{" +
                 "messageId=" + messageId +
-                ", sender=" + sender +
+                ", sender=" + sender.getUserId() +
                 ", textMessage='" + textMessage + '\'' +
                 ", removed=" + removed +
                 ", conversationId=" + conversation +

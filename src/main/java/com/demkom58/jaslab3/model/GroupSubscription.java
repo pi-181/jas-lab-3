@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity(name = "group_subscriptions")
-public class GroupSubscription implements Serializable {
+public class GroupSubscription implements ObservableEntity, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subscription_id", nullable = false)
@@ -16,8 +16,8 @@ public class GroupSubscription implements Serializable {
     private User subscriber;
 
     @ManyToOne
-    @JoinColumn(name = "conversation_id", referencedColumnName = "conversation_id", nullable = false)
-    private Conversation conversation;
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id", nullable = false)
+    private Group group;
 
     @Column(name = "creation_time", nullable = false)
     private Long creationTime;
@@ -25,16 +25,26 @@ public class GroupSubscription implements Serializable {
     @Column(nullable = false)
     private Boolean accepted = false;
 
-    public GroupSubscription(Integer subscriptionId, User subscriber, Conversation conversation,
+    public GroupSubscription(Integer subscriptionId, User subscriber, Group group,
                              Long creationTime, Boolean accepted) {
         this.subscriptionId = subscriptionId;
         this.subscriber = subscriber;
-        this.conversation = conversation;
+        this.group = group;
         this.creationTime = creationTime;
         this.accepted = accepted;
     }
 
     public GroupSubscription() {
+    }
+
+    @Override
+    public int getId() {
+        return subscriptionId;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return subscriptionId + " (" + group.getGroupName() + ")";
     }
 
     public Integer getSubscriptionId() {
@@ -53,12 +63,12 @@ public class GroupSubscription implements Serializable {
         this.subscriber = subscriber;
     }
 
-    public Conversation getConversation() {
-        return conversation;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setConversation(Conversation conversation) {
-        this.conversation = conversation;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public Long getCreationTime() {
@@ -83,23 +93,23 @@ public class GroupSubscription implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         GroupSubscription that = (GroupSubscription) o;
         return Objects.equals(subscriptionId, that.subscriptionId) &&
-                Objects.equals(subscriber, that.subscriber) &&
-                Objects.equals(conversation, that.conversation) &&
+                Objects.equals(subscriber.getUserId(), that.subscriber.getUserId()) &&
+                Objects.equals(group.getGroupId(), that.group.getGroupId()) &&
                 Objects.equals(creationTime, that.creationTime) &&
                 Objects.equals(accepted, that.accepted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(subscriptionId, subscriber, conversation, creationTime, accepted);
+        return Objects.hash(subscriptionId, subscriber.getUserId(), group.getGroupId(), creationTime, accepted);
     }
 
     @Override
     public String toString() {
         return "GroupSubscription{" +
                 "subscriptionId=" + subscriptionId +
-                ", subscriber=" + subscriber +
-                ", conversation=" + conversation +
+                ", subscriber=" + subscriber.getUserId() +
+                ", group=" + group.getGroupId() +
                 ", creationTime=" + creationTime +
                 ", accepted=" + accepted +
                 '}';

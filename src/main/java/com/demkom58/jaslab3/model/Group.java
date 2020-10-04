@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity(name = "groups")
-public class Group implements Serializable {
+public class Group implements ObservableEntity, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_id", nullable = false)
@@ -31,6 +31,16 @@ public class Group implements Serializable {
     }
 
     public Group() {
+    }
+
+    @Override
+    public int getId() {
+        return groupId;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return groupId + " (" + groupName + ")";
     }
 
     public Integer getGroupId() {
@@ -72,21 +82,21 @@ public class Group implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Group group = (Group) o;
         return Objects.equals(groupId, group.groupId) &&
-                Objects.equals(owner, group.owner) &&
+                Objects.equals(owner.getUserId(), group.owner.getUserId()) &&
                 Objects.equals(groupName, group.groupName) &&
                 Objects.equals(description, group.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(groupId, owner, groupName, description);
+        return Objects.hash(groupId, owner.getUserId(), groupName, description);
     }
 
     @Override
     public String toString() {
         return "Group{" +
                 "groupId=" + groupId +
-                ", owner=" + owner +
+                ", owner=" + owner.getUserId() +
                 ", groupName='" + groupName + '\'' +
                 ", description='" + description + '\'' +
                 '}';

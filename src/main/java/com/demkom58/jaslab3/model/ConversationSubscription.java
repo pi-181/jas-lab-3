@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity(name = "conversation_subscriptions")
-public class ConversationSubscription implements Serializable {
+public class ConversationSubscription implements ObservableEntity, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subscription_id", nullable = false)
@@ -37,6 +37,16 @@ public class ConversationSubscription implements Serializable {
     }
 
     public ConversationSubscription() {
+    }
+
+    @Override
+    public int getId() {
+        return subscriptionId;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return subscriptionId + " (" + conversation.getConversationName() + ")";
     }
 
     public Integer getSubscriptionId() {
@@ -85,23 +95,23 @@ public class ConversationSubscription implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         ConversationSubscription that = (ConversationSubscription) o;
         return Objects.equals(subscriptionId, that.subscriptionId) &&
-                Objects.equals(subscriber, that.subscriber) &&
-                Objects.equals(conversation, that.conversation) &&
+                Objects.equals(subscriber.getUserId(), that.subscriber.getUserId()) &&
+                Objects.equals(conversation.getConversationId(), that.conversation.getConversationId()) &&
                 Objects.equals(creationTime, that.creationTime) &&
                 Objects.equals(accepted, that.accepted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(subscriptionId, subscriber, conversation, creationTime, accepted);
+        return Objects.hash(subscriptionId, subscriber.getUserId(), conversation.getConversationId(), creationTime, accepted);
     }
 
     @Override
     public String toString() {
         return "ConversationSubscription{" +
                 "subscriptionId=" + subscriptionId +
-                ", subscriber=" + subscriber +
-                ", conversation=" + conversation +
+                ", subscriber=" + subscriber.getUserId() +
+                ", conversation=" + conversation.getConversationId() +
                 ", creationTime=" + creationTime +
                 ", accepted=" + accepted +
                 '}';

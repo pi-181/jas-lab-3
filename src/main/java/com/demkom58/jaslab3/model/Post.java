@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity(name = "posts")
-public class Post implements Serializable {
+public class Post implements ObservableEntity, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id", nullable = false)
@@ -39,6 +39,16 @@ public class Post implements Serializable {
     }
 
     public Post() {
+    }
+
+    @Override
+    public int getId() {
+        return postId;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return postId + " (" + postContent + ")";
     }
 
     public Integer getPostId() {
@@ -97,7 +107,7 @@ public class Post implements Serializable {
         return Objects.equals(postId, post.postId) &&
                 Objects.equals(postContent, post.postContent) &&
                 Objects.equals(views, post.views) &&
-                Objects.equals(group, post.group) &&
+                Objects.equals(group.getGroupId(), post.group.getGroupId()) &&
                 Objects.equals(author, post.author) &&
                 Objects.equals(postDate, post.postDate);
     }
@@ -113,8 +123,8 @@ public class Post implements Serializable {
                 "postId=" + postId +
                 ", postContent='" + postContent + '\'' +
                 ", views=" + views +
-                ", group=" + group +
-                ", author=" + author +
+                ", group=" + group.getGroupId() +
+                ", author=" + author.getUserId() +
                 ", postDate=" + postDate +
                 '}';
     }

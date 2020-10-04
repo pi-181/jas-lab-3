@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity(name = "conversations")
-public class Conversation implements Serializable {
+public class Conversation implements ObservableEntity, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "conversation_id", nullable = false)
@@ -24,6 +24,16 @@ public class Conversation implements Serializable {
     }
 
     public Conversation() {
+    }
+
+    @Override
+    public int getId() {
+        return conversationId;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return conversationId + " (" + getConversationName() + ")";
     }
 
     public Integer getConversationId() {
