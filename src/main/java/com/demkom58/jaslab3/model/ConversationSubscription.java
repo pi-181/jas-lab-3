@@ -10,21 +10,25 @@ public class ConversationSubscription implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subscription_id", nullable = false)
     private Integer subscriptionId;
+
     @ManyToOne
     @JoinColumn(name = "subscriber_id",
             referencedColumnName = "user_id", nullable = false)
     private User subscriber;
+
     @ManyToOne
     @JoinColumn(name = "conversation_id",
             referencedColumnName = "conversation_id", nullable = false)
     private Conversation conversation;
+
     @Column(name = "creation_time", nullable = false)
     private Long creationTime = System.currentTimeMillis();
+
     @Column(nullable = false)
     private Boolean accepted = false;
 
     public ConversationSubscription(Integer subscriptionId, User subscriber, Conversation conversation,
-                                    Integer creationTime, Boolean accepted) {
+                                    Long creationTime, Boolean accepted) {
         this.subscriptionId = subscriptionId;
         this.subscriber = subscriber;
         this.conversation = conversation;
@@ -59,11 +63,11 @@ public class ConversationSubscription implements Serializable {
         this.conversation = conversation;
     }
 
-    public Integer getCreationTime() {
+    public Long getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(Integer creationTime) {
+    public void setCreationTime(Long creationTime) {
         this.creationTime = creationTime;
     }
 

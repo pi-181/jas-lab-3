@@ -10,16 +10,21 @@ public class Post implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id", nullable = false)
     private Integer postId;
+
     @Column(name = "post_content", nullable = false)
     private String postContent;
+
     @Column(nullable = false)
     private Integer views;
+
     @ManyToOne
     @JoinColumn(name = "group_id", referencedColumnName = "group_id")
     private Group group;
+
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "user_id")
     private User author;
+
     @Column(name = "postDate", nullable = false)
     private Long postDate;
 

@@ -16,8 +16,10 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     private String username;
+
     @Column(nullable = false)
     private String surname;
+
     private String patronymic;
 
     @Column(name = "birthday_date")
@@ -25,8 +27,10 @@ public class User implements Serializable {
 
     @Column(name = "creation_time", nullable = false)
     private Long creationTime;
+
     @Column(nullable = false)
     private String email;
+
     @Column(nullable = false)
     private Boolean verified = false;
 

@@ -10,8 +10,10 @@ public class Conversation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "conversation_id", nullable = false)
     private Integer conversationId;
+
     @Column(name = "conversation_name", nullable = false)
     private String conversationName;
+
     @Column(nullable = false)
     private Boolean removed = false;
 

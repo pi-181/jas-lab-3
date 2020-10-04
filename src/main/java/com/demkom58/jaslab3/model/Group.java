@@ -12,12 +12,15 @@ public class Group implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_id", nullable = false)
     private Integer groupId;
+
     @ManyToOne
     @JoinColumn(name = "owner_id",
             referencedColumnName = "user_id", nullable = false)
     private User owner;
+
     @Column(name = "group_name", nullable = false)
     private String groupName;
+
     private String description;
 
     public Group(Integer groupId, User owner, String groupName, String description) {

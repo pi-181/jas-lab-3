@@ -10,13 +10,17 @@ public class Message implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id", nullable = false)
     private Integer messageId;
+
     @ManyToOne
     @JoinColumn(name = "sender_id", referencedColumnName = "user_id", nullable = false)
     private User sender;
+
     @Column(name = "text_message", nullable = false)
     private String textMessage;
+
     @Column(nullable = false)
     private Boolean removed;
+
     @ManyToOne
     @JoinColumn(name = "conversation_id",
             referencedColumnName = "conversation_id", nullable = false)

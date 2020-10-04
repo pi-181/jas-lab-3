@@ -10,14 +10,18 @@ public class GroupSubscription implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subscription_id", nullable = false)
     private Integer subscriptionId;
+
     @ManyToOne
     @JoinColumn(name = "subscriber_id", referencedColumnName = "user_id", nullable = false)
     private User subscriber;
+
     @ManyToOne
     @JoinColumn(name = "conversation_id", referencedColumnName = "conversation_id", nullable = false)
     private Conversation conversation;
+
     @Column(name = "creation_time", nullable = false)
     private Long creationTime;
+
     @Column(nullable = false)
     private Boolean accepted = false;
 
